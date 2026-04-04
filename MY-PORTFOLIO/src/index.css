@@ -1,0 +1,18 @@
+/* ✅ MUST BE FIRST */
+@import url("/fonts/mathildaine/style.css");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap");
+
+/* then font-face */
+@font-face {
+  font-family: "Mathildaine";
+  src: url("/fonts/mathildaine/Mathildaine-qZ1Zr.woff") format("woff");
+}
+
+/* then tailwind */
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    overflow-x: hidden;
+  }
+}
