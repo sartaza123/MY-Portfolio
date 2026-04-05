@@ -192,7 +192,7 @@ const Contacts = () => {
                   ref={buttonRef}
                   type="submit"
                   disabled={status === "sending"}
-                  className="px-6 py-3 border border-black rounded-full font-medium hover:bg-black hover:text-white transition-all"
+                  className="px-6 py-3 border border-black rounded-full font-medium hover:bg-black hover:text-white"
                   style={{ opacity: status === "sending" ? 0.6 : 1 }}
                 >
                   {status === "sending"

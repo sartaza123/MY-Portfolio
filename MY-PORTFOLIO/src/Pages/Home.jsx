@@ -86,18 +86,17 @@ const Home = () => {
                   hoverText="Get in touch ->"
                   onClick={() => window.location.assign("#contact")}
                 />
-                <button
-                  type="button"
+                <StaggerButton
+                  text="Resume"
+                  hoverText="Download Resume ->"
                   onClick={handleResumeClick}
-                  disabled={resumeLoading || !resume?.file}
-                  className="rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold tracking-wide text-white transition hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {resumeLoading
                     ? "Loading resume..."
                     : resume?.file
                       ? "Download Resume"
                       : "Resume Unavailable"}
-                </button>
+                </StaggerButton>
               </div>
               {resume?.title && (
                 <p className="mt-3 text-xs tracking-[0.18em] uppercase text-gray-500">
