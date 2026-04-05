@@ -1,16 +1,23 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import Marquee from '../components/Marquee';
-import { buildAssetUrl, portfolioApi } from '../services/api';
-import { usePortfolioContent } from '../context/PortfolioContentContext';
+import React, { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import Marquee from "../components/Marquee";
+import { buildAssetUrl, portfolioApi } from "../services/api";
+import { usePortfolioContent } from "../context/PortfolioContentContext";
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* Pre-defined fan rotations for up to 5 cards */
+const ROTATIONS = [-12, -6, 0, 6, 12];
 
 const Certificates = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
-  const certificatesRef = useRef();
-  const sectionRef = useRef();
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+  const titleRef = useRef(null);
   const { content } = usePortfolioContent();
 
   useEffect(() => {
@@ -21,96 +28,166 @@ const Certificates = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const rotations = [-6, -4, 0, 7, -3];
+  /* Animate cards in once data is ready */
+  useGSAP(
+    () => {
+      const cards = cardsRef.current.filter(Boolean);
+      if (!cards.length) return;
 
-  useGSAP(() => {
-    const cards = gsap.utils.toArray('.certificate-card');
-    if (!cards.length) return;
+      /* Staggered entrance from below */
+      gsap.fromTo(
+        cards,
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+            once: true,
+          },
+        },
+      );
 
-    const center = (cards.length - 1) / 2;
+      /* Animate the heading in too */
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+              once: true,
+            },
+          },
+        );
+      }
 
-    gsap.from(certificatesRef.current, {
-      y: 200,
-      opacity: 0,
-      duration: 2,
-      delay: 0.5,
-      ease: 'power4.out',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 30%',
-        end: 'top 25%',
-      },
-    });
-
-    gsap.to(cards, {
-      x: (i) => (i - center) * (cards.length < 3 ? 120 : 220),
-      y: (i) => Math.abs(i - center) * -10,
-      rotate: (i) => rotations[i % rotations.length],
-      scale: (i) => 1 - Math.abs(i - center) * 0.05,
-      zIndex: (i) => 100 - Math.abs(i - center),
-      duration: 0.5,
-      delay: 2,
-      ease: 'power3.out',
-      stagger: 0.05,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 25%',
-        end: 'top 20%',
-      },
-    });
-  }, { dependencies: [certificates] });
+      ScrollTrigger.refresh();
+    },
+    { dependencies: [certificates] },
+  );
 
   return (
     <>
       <section
         id="certificates"
         ref={sectionRef}
-        className="relative w-full bg-white h-[500px] text-black flex items-center justify-center overflow-hidden"
+        className="relative w-full bg-white text-black py-[4rem] pb-[6rem] overflow-hidden"
       >
-        <h1
-          className="relative z-10 text-[300px] leading-none text-black/80 text-center select-none max-md:text-[140px]"
-          style={{ fontFamily: 'Mathildaine' }}
-        >
-          CertificaTes
-          <span ref={certificatesRef} className="absolute inset-0 flex items-center justify-center">
-            {(loading || certificates.length === 0) && (
-              <p className="text-gray-400 text-xl">{loading ? 'Loading Certificates...' : 'No Certificates Yet'}</p>
-            )}
+        {/* Section header */}
+        <div className="px-[clamp(1.5rem,8vw,5rem)] mb-[3.5rem]" ref={titleRef}>
+          <span className="block font-['Orbitron'] text-[clamp(64px,7vw,120px)] font-semibold uppercase tracking-[0.04em] text-transparent leading-none [-webkit-text-stroke:2px_rgba(0,0,0,0.85)]">
+            Certificates
+          </span>
+          <p className="mt-4 max-w-[42rem] text-gray-500 leading-[1.75] text-[1rem]">
+            Credentials earned through learning, projects and professional
+            development.
+          </p>
+        </div>
 
+        {/* Loading skeleton */}
+        {loading && (
+          <div className="px-[clamp(1.5rem,8vw,5rem)] flex gap-6 flex-wrap">
+            {[1, 2, 3].map((x) => (
+              <div
+                key={x}
+                className="w-[220px] h-[280px] rounded-2xl bg-black/5 animate-pulse"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* No certificates */}
+        {!loading && certificates.length === 0 && (
+          <div className="px-[clamp(1.5rem,8vw,5rem)] flex min-h-[30vh] items-center justify-center">
+            <p className="text-gray-400 text-xl">No certificates yet.</p>
+          </div>
+        )}
+
+        {/* Certificate cards fan */}
+        {!loading && certificates.length > 0 && (
+          <div className="px-[clamp(1.5rem,8vw,5rem)] flex flex-wrap gap-6 justify-center items-end py-8">
             {certificates.map((item, i) => (
-              <span
+              <div
                 key={item.id || i}
-                className="certificate-card absolute w-[200px] h-[200px] flex items-center justify-center"
+                ref={(el) => (cardsRef.current[i] = el)}
                 onClick={() => setActiveImage(buildAssetUrl(item.image))}
+                className="cursor-pointer group relative flex-shrink-0"
+                style={{
+                  transform: `rotate(${ROTATIONS[i % ROTATIONS.length]}deg)`,
+                  transformOrigin: "bottom center",
+                  transition: "transform 0.3s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "rotate(0deg) scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = `rotate(${ROTATIONS[i % ROTATIONS.length]}deg)`)
+                }
               >
-                <div
-                  className="w-full h-full rounded-xl flex items-center justify-center transition duration-300 hover:scale-105 backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.27)] before:absolute before:inset-0 before:rounded-xl before:bg-white/10 before:opacity-20 before:pointer-events-none"
-                  style={{ transform: `rotate(${rotations[i % rotations.length]}deg)` }}
-                >
-                  <div className="absolute inset-0 rounded-xl bg-linear-to-br from-white/20 via-transparent to-white/10 opacity-30 pointer-events-none"></div>
-                  <div className="w-[160px] h-[160px] rounded-lg overflow-hidden border border-white/20">
-                    <img src={buildAssetUrl(item.image)} alt={item.title || `certificate-${i}`} className="w-full h-full object-cover" />
+                <div className="w-[200px] rounded-2xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.18)] border border-black/10 bg-white">
+                  <div className="w-full h-[160px] overflow-hidden">
+                    <img
+                      src={buildAssetUrl(item.image)}
+                      alt={item.title || `Certificate ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs font-semibold text-gray-900 truncate">
+                      {item.title}
+                    </p>
+                    {item.issuer && (
+                      <p className="text-[0.65rem] text-gray-400 mt-1 truncate uppercase tracking-wide">
+                        {item.issuer}
+                      </p>
+                    )}
+                    <p className="text-[0.6rem] text-black/30 mt-2 uppercase tracking-widest">
+                      Click to expand
+                    </p>
                   </div>
                 </div>
-              </span>
+              </div>
             ))}
-          </span>
-        </h1>
+          </div>
+        )}
       </section>
 
       <Marquee items={content.marqueeItems || []} />
 
+      {/* Lightbox */}
       {activeImage && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center">
+        <div
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center"
+          onClick={() => setActiveImage(null)}
+        >
           <button
             onClick={() => setActiveImage(null)}
             className="absolute top-6 right-6 text-white text-3xl font-bold hover:scale-110 transition"
           >
-            x
+            ✕
           </button>
 
-          <div className="max-w-[90vw] max-h-[90vh] rounded-xl overflow-hidden shadow-2xl">
-            <img src={activeImage} alt="certificate-full" className="w-full h-full object-contain" />
+          <div
+            className="max-w-[90vw] max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={activeImage}
+              alt="certificate-full"
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
       )}
