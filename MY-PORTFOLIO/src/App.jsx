@@ -1,9 +1,13 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 // Eagerly loaded — above the fold
 import Home from "./Pages/Home";
 import MouseFollower from "./components/MouseFollower";
 import { PortfolioContentProvider } from "./context/PortfolioContentContext";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Lazy-loaded — below the fold
 const About = lazy(() => import("./Pages/About"));
@@ -19,6 +23,11 @@ const PageFallback = () => (
 );
 
 const App = () => {
+  useEffect(() => {
+    const id = setTimeout(() => ScrollTrigger.refresh(), 1500);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <PortfolioContentProvider>
       <div className="relative bg-black text-white">

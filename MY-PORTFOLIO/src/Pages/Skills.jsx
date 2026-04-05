@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { portfolioApi } from "../services/api";
 
+// Register once — safe to call multiple times, GSAP deduplicates
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─── constants ─────────────────────────────────────────── */
@@ -31,7 +32,10 @@ const Skills = () => {
   useEffect(() => {
     if (loading || skills.length === 0) return;
 
-    const raf = requestAnimationFrame(() =>
+    let rafId;
+    let st;
+
+    rafId = requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         const blocks = cardRefs.current.filter(Boolean);
         const n = blocks.length;
@@ -55,24 +59,24 @@ const Skills = () => {
             top: 0,
             left: 0,
             width: "100%",
-            zIndex: i + 1 /* z[0] < z[1] < … < z[n-1] */,
+            zIndex: i + 1,
           });
 
           /* Slide each block to its stacked position */
           tl.to(
             block,
             {
-              y: i * STACK_GAP /* ← controls the peek gap */,
+              y: i * STACK_GAP,
               opacity: 1,
               duration: 1,
               ease: "none",
             },
-            i /* stagger: card i starts at timeline beat i */,
+            i,
           );
         });
 
         /* Pin the wrapper & scrub the timeline with scroll */
-        ScrollTrigger.create({
+        st = ScrollTrigger.create({
           trigger: wrapRef.current,
           start: "top 50px",
           end: `+=${n * STEP_SCROLL}px`,
@@ -84,13 +88,14 @@ const Skills = () => {
           id: "skills-stack",
         });
 
-        /* Force GSAP to re-measure positions with the new wrapper height */
-        ScrollTrigger.refresh();
+        /* invalidateOnRefresh:true handles recalculation on resize;
+           App.jsx owns the single post-mount ScrollTrigger.refresh() call. */
       }),
     );
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafId);
+      st?.kill();
       ScrollTrigger.getById("skills-stack")?.kill();
     };
   }, [loading, skills]);

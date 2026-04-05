@@ -51,7 +51,10 @@ const Projects = () => {
   useEffect(() => {
     if (loading || projects.length === 0) return;
 
-    const raf = requestAnimationFrame(() =>
+    let rafId;
+    let st;
+
+    rafId = requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         const blocks = cardRefs.current.filter(Boolean);
         const n = blocks.length;
@@ -82,7 +85,8 @@ const Projects = () => {
           );
         });
 
-        ScrollTrigger.create({
+        /* Pin & scrub — mirrors Skills exactly */
+        st = ScrollTrigger.create({
           trigger: wrapRef.current,
           start: "top 50px",
           end: `+=${n * STEP_SCROLL}px`,
@@ -94,13 +98,14 @@ const Projects = () => {
           id: "projects-stack",
         });
 
-        /* Force GSAP to re-measure positions with the new wrapper height */
-        ScrollTrigger.refresh();
+        /* invalidateOnRefresh:true handles recalculation on resize;
+           App.jsx owns the single post-mount ScrollTrigger.refresh() call. */
       }),
     );
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafId);
+      st?.kill();
       ScrollTrigger.getById("projects-stack")?.kill();
     };
   }, [loading, projects]);
@@ -200,7 +205,10 @@ const Projects = () => {
               >
                 <div className="relative px-[2rem]">
                   {/* title */}
-                  <h2 className="flex items-center h-[94px] text-[clamp(2rem,4vw,4rem)] font-bold uppercase tracking-[-0.02em] leading-[0.95] text-white whitespace-nowrap overflow-hidden text-ellipsis">
+                  <h2
+                    className="flex items-center text-[clamp(2rem,4vw,4rem)] font-bold uppercase tracking-[-0.02em] leading-[0.95] text-white whitespace-nowrap overflow-hidden text-ellipsis"
+                    style={{ height: BAND_H }}
+                  >
                     {project.title}
                   </h2>
 
