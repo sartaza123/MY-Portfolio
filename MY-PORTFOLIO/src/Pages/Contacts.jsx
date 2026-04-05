@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -94,34 +94,34 @@ const Contacts = () => {
     <>
       {/* header */}
       <div className="px-[clamp(1.5rem,8vw,5rem)] mb-[3.5rem]">
-        <span className="block font-['Orbitron'] text-[clamp(64px,10vw,120px)] font-semibold uppercase tracking-[0.04em] text-transparent leading-none [-webkit-text-stroke:2px_rgba(255,255,255,0.85)]">
+        <span className="block font-['Orbitron'] text-[clamp(48px,10vw,120px)] font-semibold uppercase tracking-[0.04em] text-transparent leading-none [-webkit-text-stroke:2px_rgba(255,255,255,0.85)]">
           Contact
         </span>
-
         <p className="mt-4 max-w-[42rem] text-gray-500 leading-[1.75] text-[1rem]">
-          Scroll to layer each project — hover any card to preview, click the
-          image to go live.
+          {content.contactSubheading || "Have a project in mind? Let's talk."}
         </p>
       </div>
+
       <section
         ref={sectionRef}
         className="w-full flex items-center py-10 max-lg:flex-col max-lg:gap-8"
       >
+        {/* Left info card */}
         <div
           ref={leftRef}
-          className="relative z-10 pl-20 justify-center w-[55%] max-lg:w-full max-lg:pl-6 max-lg:pr-6"
+          className="relative z-10 pl-[clamp(1.5rem,5vw,5rem)] pr-8 justify-center w-[55%] max-lg:w-full max-lg:px-6"
         >
-          <div className="bg-black text-white flex flex-col p-10 border-2 border-white rounded-2xl">
-            <h1 className="text-[clamp(30px,5vw,70px)] font-bold leading-tight">
+          <div className="bg-black text-white flex flex-col p-8 md:p-10 border-2 border-white rounded-2xl h-full">
+            <h2 className="text-[clamp(24px,4vw,60px)] font-bold leading-tight">
               {content.contactHeading || "Let's connect."}
-            </h1>
+            </h2>
             <p className="mt-8 text-gray-400 max-w-md text-lg leading-relaxed">
               {content.contactSubheading || "Use the form to reach out."}
             </p>
             <div className="mt-16 space-y-6 text-sm">
               <div>
                 <p className="text-gray-500 uppercase tracking-widest">Email</p>
-                <h3 className="text-lg font-medium">
+                <p className="text-lg font-medium">
                   {content.contactEmail ? (
                     <a href={`mailto:${content.contactEmail}`}>
                       {content.contactEmail}
@@ -129,19 +129,21 @@ const Contacts = () => {
                   ) : (
                     "No email configured"
                   )}
-                </h3>
+                </p>
               </div>
               <div>
                 <p className="text-gray-500 uppercase tracking-widest">
                   Location
                 </p>
-                <h3 className="text-lg font-medium">
+                <p className="text-lg font-medium">
                   {content.location || "Location unavailable"}
-                </h3>
+                </p>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Right form */}
         <div
           ref={formRef}
           className="relative z-20 flex flex-col w-[45%] -ml-20 max-lg:w-full max-lg:ml-0 max-lg:px-6"

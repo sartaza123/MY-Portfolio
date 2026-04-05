@@ -1,6 +1,6 @@
-﻿import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { useRef } from 'react';
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useRef } from "react";
 
 const AboutHeader = ({ label, outlineTitle, scriptTitle }) => {
   const aboutRef = useRef();
@@ -11,32 +11,15 @@ const AboutHeader = ({ label, outlineTitle, scriptTitle }) => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: aboutRef.current,
-        start: 'top 70%',
-        end: 'bottom 40%',
+        start: "top 70%",
+        end: "bottom 40%",
         scrub: 1.5,
       },
     });
 
-    tl.from(aboutRef.current, {
-      y: 40,
-      opacity: 0,
-    })
-      .from(
-        heading1Ref.current,
-        {
-          y: 40,
-          opacity: 0,
-        },
-        '-=0.3',
-      )
-      .from(
-        heading2Ref.current,
-        {
-          y: 40,
-          opacity: 0,
-        },
-        '-=0.3',
-      );
+    tl.from(aboutRef.current, { y: 40, opacity: 0 })
+      .from(heading1Ref.current, { y: 40, opacity: 0 }, "-=0.3")
+      .from(heading2Ref.current, { y: 40, opacity: 0 }, "-=0.3");
   });
 
   return (
@@ -44,9 +27,9 @@ const AboutHeader = ({ label, outlineTitle, scriptTitle }) => {
       <span
         ref={aboutRef}
         className="absolute top-10 left-6 md:left-16 text-4xl tracking-widest uppercase"
-        style={{ fontFamily: 'Orbitron' }}
+        style={{ fontFamily: "Orbitron" }}
       >
-        {label || 'About Me'}
+        {label || "About Me"}
       </span>
 
       <h1
@@ -54,22 +37,22 @@ const AboutHeader = ({ label, outlineTitle, scriptTitle }) => {
         className="text-[150px] -mt-10 font-bold leading-none select-none"
         style={{
           fontFamily: "'Orbitron', sans-serif",
-          color: 'transparent',
-          WebkitTextStroke: '2px rgba(0,0,0,0.9)',
+          color: "transparent",
+          WebkitTextStroke: "2px rgba(0,0,0,0.9)",
         }}
       >
-        {outlineTitle || 'WEBSITE'}
+        {outlineTitle || "WEBSITE"}
       </h1>
 
       <span
         ref={heading2Ref}
         className="absolute top-0 right-20 text-[400px]"
         style={{
-          fontFamily: 'Mathildaine',
-          color: 'black',
+          fontFamily: "Mathildaine",
+          color: "black",
         }}
       >
-        {scriptTitle || 'Designer'}
+        {scriptTitle || "Designer"}
       </span>
     </section>
   );

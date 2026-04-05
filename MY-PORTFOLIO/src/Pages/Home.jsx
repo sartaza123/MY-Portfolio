@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { MdEmail } from "react-icons/md";
@@ -58,11 +58,11 @@ const Home = () => {
     <>
       <NavBar />
       <div className="flex w-full justify-between overflow-hidden max-lg:flex-col">
-        <section className="relative h-screen w-[60%] bg-black overflow-hidden max-lg:w-full">
+        <section className="relative h-screen w-[60%] bg-black overflow-hidden max-lg:w-full max-lg:min-h-[100svh]">
           <div className="relative z-10 h-full flex pt-30 px-6 md:px-20">
             <div ref={textsRef} className="max-w-xl text-white relative">
               <h1
-                className="text-[70px] font-bold leading-none select-none max-md:text-[48px]"
+                className="text-[70px] font-bold leading-none select-none max-md:text-[40px]"
                 style={{
                   fontFamily: "'Orbitron', sans-serif",
                   color: "transparent",
@@ -72,12 +72,12 @@ const Home = () => {
                 {content.heroOutlineTitle || "Portfolio"}
               </h1>
               <span
-                className="absolute -top-8 left-80 text-[200px] max-md:static max-md:block max-md:text-[92px]"
+                className="absolute -top-8 left-80 text-[200px] max-md:static max-md:block max-md:text-[80px] max-md:mt-2"
                 style={{ fontFamily: "Mathildaine", color: "white" }}
               >
                 {content.heroScriptTitle || "Developer"}
               </span>
-              <p className="text-gray-300 mt-26 text-sm max-w-md leading-7">
+              <p className="text-gray-300 mt-26 text-sm max-w-md leading-7 max-md:mt-6">
                 {content.heroDescription || "Portfolio content is loading."}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
@@ -87,16 +87,18 @@ const Home = () => {
                   onClick={() => window.location.assign("#contact")}
                 />
                 <StaggerButton
-                  text="Resume"
-                  hoverText="Download Resume ->"
+                  text={
+                    resumeLoading
+                      ? "Loading..."
+                      : resume?.file
+                        ? "Resume"
+                        : "Resume"
+                  }
+                  hoverText={
+                    resume?.file ? "Download Resume ->" : "Unavailable"
+                  }
                   onClick={handleResumeClick}
-                >
-                  {resumeLoading
-                    ? "Loading resume..."
-                    : resume?.file
-                      ? "Download Resume"
-                      : "Resume Unavailable"}
-                </StaggerButton>
+                />
               </div>
               {resume?.title && (
                 <p className="mt-3 text-xs tracking-[0.18em] uppercase text-gray-500">

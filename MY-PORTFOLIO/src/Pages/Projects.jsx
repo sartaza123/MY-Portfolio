@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { buildAssetUrl, portfolioApi } from "../services/api";
+import { scheduleRefresh } from "../utils/scrollRefresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,8 +99,8 @@ const Projects = () => {
           id: "projects-stack",
         });
 
-        /* invalidateOnRefresh:true handles recalculation on resize;
-           App.jsx owns the single post-mount ScrollTrigger.refresh() call. */
+        /* Schedule debounced refresh — collapses with Skills' call into one. */
+        scheduleRefresh();
       }),
     );
 
@@ -117,9 +118,7 @@ const Projects = () => {
       {/* cursor preview */}
       <div
         ref={cursorRef}
-        className={`fixed top-0 left-0 z-[999] ${
-          showImage ? "pointer-events-auto" : "pointer-events-none"
-        }`}
+        className={`fixed top-0 left-0 z-[999] pointer-events-none`}
       >
         <div
           onClick={() =>
@@ -139,13 +138,13 @@ const Projects = () => {
             />
           )}
 
-          {showImage && hoveredProject?.liveLink && (
+          {/* {showImage && hoveredProject?.liveLink && (
             <div className="absolute inset-0 flex items-end justify-center pb-4 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
               <span className="text-[0.6rem] uppercase tracking-[0.3em] text-white/85 bg-black/40 px-3 py-1 rounded-full border border-white/15 backdrop-blur">
                 Click to see live preview
               </span>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -230,6 +229,19 @@ const Projects = () => {
                         </span>
                       ))}
                     </div>
+                  )}
+                  {/* live button */}
+                  {project.liveLink && (
+                    <a
+                      href={project.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => setCodeHovered(true)}
+                      onMouseLeave={() => setCodeHovered(false)}
+                      className="absolute right-30 top-8 -translate-y-1/2 text-[0.65rem] uppercase tracking-[0.35em] text-white hover:text-white/70 transition py-2"
+                    >
+                      Live ↗
+                    </a>
                   )}
 
                   {/* code button */}

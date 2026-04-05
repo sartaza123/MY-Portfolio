@@ -1,18 +1,33 @@
-/* ✅ MUST BE FIRST */
+/* Font imports — must come first */
 @import url("/fonts/mathildaine/style.css");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap");
 
-/* then font-face */
 @font-face {
   font-family: "Mathildaine";
   src: url("/fonts/mathildaine/Mathildaine-qZ1Zr.woff") format("woff");
+  font-display: swap;
 }
 
-/* then tailwind */
 @import "tailwindcss";
 
 @layer base {
-  html, body {
+  html {
+    /* overflow-x: hidden; */
+    /* Smooth scroll for anchor links */
+    scroll-behavior: smooth;
+  }
+
+  body {
     overflow-x: hidden;
+    /* Prevent layout shift from scrollbar appearing */
+    scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent images from overflowing their containers */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }

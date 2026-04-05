@@ -22,10 +22,7 @@ const About = () => {
   });
 
   return (
-    <section
-      id="about"
-      className="relative bg-white text-black overflow-hidden"
-    >
+    <section id="about" className="relative bg-white text-black">
       <div className="relative z-20">
         <AboutHeader
           label={content.aboutLabel}
@@ -36,7 +33,7 @@ const About = () => {
 
       <div
         ref={descriptionRef}
-        className="px-6 md:px-16 pb-20 max-w-3xl text-black"
+        className="px-6 md:px-16 pb-20 max-w-3xl text-black border border-red-700"
       >
         <h3 className="text-6xl" style={{ fontFamily: "Mathildaine" }}>
           {content.aboutHeading || "About"}

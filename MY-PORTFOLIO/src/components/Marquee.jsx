@@ -25,7 +25,7 @@ const Marquee = ({ items = [], speed = 20, className = "" }) => {
         {[...items, ...items].map((item, i) => (
           <div
             key={i}
-            className="min-w-[200px] md:min-w-[240px] px-6 py-3 bg-white/5 text-white backdrop-blur-md text-center whitespace-nowrap"
+            className="min-w-[180px] md:min-w-[240px] px-6 py-3 bg-white/5 text-white backdrop-blur-md text-center whitespace-nowrap text-sm md:text-base"
             style={{ fontFamily: "'Orbitron', sans-serif" }}
           >
             {item}

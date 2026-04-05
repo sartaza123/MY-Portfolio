@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { portfolioApi } from "../services/api";
+import { scheduleRefresh } from "../utils/scrollRefresh";
 
 // Register once — safe to call multiple times, GSAP deduplicates
 gsap.registerPlugin(ScrollTrigger);
@@ -88,8 +89,9 @@ const Skills = () => {
           id: "skills-stack",
         });
 
-        /* invalidateOnRefresh:true handles recalculation on resize;
-           App.jsx owns the single post-mount ScrollTrigger.refresh() call. */
+        /* Schedule a debounced refresh — Projects will call this too;
+           the debounce collapses both into one refresh after both are ready. */
+        scheduleRefresh();
       }),
     );
 
