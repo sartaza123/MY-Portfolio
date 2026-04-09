@@ -69,7 +69,7 @@ const Home = () => {
                   WebkitTextStroke: "2px rgba(255,255,255,0.9)",
                 }}
               >
-                {content.heroOutlineTitle || "Portfolio"}
+                {content.heroOutlineTitle || "MERN-STACK"}
               </h1>
               <span
                 className="absolute -top-8 left-80 text-[200px] max-md:static max-md:block max-md:text-[80px] max-md:mt-2"
