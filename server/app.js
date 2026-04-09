@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 // Route imports
@@ -14,14 +15,22 @@ const certificateRoutes = require("./routes/certificateRoutes");
 const app = express();
 
 // ─── CORS ───────────────────────────────────────────────────────────────────
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
+  // Production domains — set ALLOWED_ORIGINS in your deployment env
+  // e.g. ALLOWED_ORIGINS=https://my-portfolio.vercel.app,https://my-admin.vercel.app
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173", // Admin panel (Vite default)
-      "http://localhost:5174", // Portfolio frontend (fallback port)
-      "http://localhost:3000", // Portfolio frontend alternative
-      "http://localhost:3001", // Alternative
-    ],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   }),
 );
@@ -43,7 +52,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/certificates", certificateRoutes);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ─── Error handling ──────────────────────────────────────────────────────────
 app.use(notFound);

@@ -1,6 +1,5 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-// import Sidebar from './components/layout/Sidebar';
 import Header from "./components/layout/Header";
 import { ToastProvider } from "./contexts/ToastContext";
 import SideBar from "./components/layout/SideBar";
