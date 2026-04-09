@@ -22,7 +22,7 @@ const NAV = [
   { to: "/settings", label: "Settings", icon: RiSettings4Line },
 ];
 
-const Sidebar = ({ isOpen = false, onClose }) => {
+const SideBar = ({ isOpen = false, onClose }) => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
   const initials = (user?.name || "A").slice(0, 2).toUpperCase();
@@ -214,4 +214,4 @@ const Sidebar = ({ isOpen = false, onClose }) => {
   );
 };
 
-export default Sidebar;
+export default SideBar;

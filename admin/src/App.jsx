@@ -1,15 +1,16 @@
-﻿import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from './components/layout/Sidebar';
-import Header from './components/layout/Header';
-import { ToastProvider } from './contexts/ToastContext';
+﻿import { useState } from "react";
+import { Outlet } from "react-router-dom";
+// import Sidebar from './components/layout/Sidebar';
+import Header from "./components/layout/Header";
+import { ToastProvider } from "./contexts/ToastContext";
+import SideBar from "./components/layout/SideBar";
 
 const AppShell = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="admin-layout">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <SideBar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="content-area">
         <Header onMenuToggle={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content">
