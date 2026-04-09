@@ -24,7 +24,7 @@ const PageFallback = () => (
 
 const App = () => {
   useEffect(() => {
-    const id = setTimeout(() => ScrollTrigger.refresh(), 1500);
+    const id = setTimeout(() => ScrollTrigger.refresh(), 2000);
     return () => clearTimeout(id);
   }, []);
 

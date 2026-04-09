@@ -1,16 +1,15 @@
 import ScrollTrigger from "gsap/ScrollTrigger";
 
-/**
- * Debounced ScrollTrigger.refresh().
- *
- * Skills and Projects both call this after setting up their ScrollTriggers.
- * Because they finish within milliseconds of each other (both are API-driven),
- * the debounce collapses the two calls into a single refresh that fires AFTER
- * both pin-spacer elements are in the DOM — fixing the cross-section overlap.
- */
 let _timer = null;
+let _timer2 = null;
 
-export function scheduleRefresh(delay = 400) {
+export function scheduleRefresh(delay = 600) {
   clearTimeout(_timer);
-  _timer = setTimeout(() => ScrollTrigger.refresh(), delay);
+  clearTimeout(_timer2);
+  _timer = setTimeout(() => {
+    ScrollTrigger.refresh();
+    // Second refresh 400 ms later catches any section whose API response
+    // landed just after the first refresh fired (cached responses race).
+    _timer2 = setTimeout(() => ScrollTrigger.refresh(), 400);
+  }, delay);
 }

@@ -72,8 +72,6 @@ const Certificates = () => {
           },
         );
       }
-
-      ScrollTrigger.refresh();
     },
     { dependencies: [certificates] },
   );
