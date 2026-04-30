@@ -1,4 +1,4 @@
-﻿/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-refresh/only-export-components */
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
@@ -6,6 +6,8 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import App from './App';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/auth/Login';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'));
 const AllProjects = lazy(() => import('./pages/projects/AllProjects'));
@@ -26,6 +28,8 @@ const wrap = (element) => <Suspense fallback={<PageLoader />}>{element}</Suspens
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
+  { path: '/forgot-password', element: <ForgotPassword /> },
+  { path: '/reset-password/:token', element: <ResetPassword /> },
   {
     path: '/',
     element: <ProtectedRoute><App /></ProtectedRoute>,

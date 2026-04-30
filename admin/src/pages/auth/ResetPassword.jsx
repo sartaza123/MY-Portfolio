@@ -1,31 +1,44 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { loginUser } from '../../services/authService';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { resetPasswordAPI } from '../../services/authService';
 import { RiShieldLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-const Login = () => {
-  const [form,    setForm]    = useState({ email: '', password: '' });
-  const [showPw,  setShowPw]  = useState(false);
-  const [error,   setError]   = useState('');
+const ResetPassword = () => {
+  const { token } = useParams();
+  const navigate = useNavigate();
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPw, setShowPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const { login }  = useAuth();
-  const navigate   = useNavigate();
-
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!form.email || !form.password) { setError('Please fill in all fields.'); return; }
+    setMessage('');
+
+    if (!password || !confirmPassword) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const data = await loginUser({ email: form.email, password: form.password });
-      login(data.token, data.user);
-      navigate('/');
+      const res = await resetPasswordAPI(token, { password });
+      setMessage(res.message || 'Password reset successfully. You can now sign in.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
     } catch (err) {
-      setError(err.message || 'Login failed. Check your credentials.');
+      setError(err.message || 'Failed to reset password. Token might be invalid or expired.');
     } finally {
       setLoading(false);
     }
@@ -76,14 +89,6 @@ const Login = () => {
           <p style={{ color: '#52525b', fontSize: '0.9rem', lineHeight: 1.6 }}>
             Complete control over your portfolio content — projects, skills, and visitor messages.
           </p>
-          <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {['Manage Projects & Skills', 'View Contact Messages', 'Update Profile & Settings'].map((f) => (
-              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <span style={{ width: 20, height: 20, borderRadius: 6, background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', color: '#6366f1' }}>✓</span>
-                <span style={{ fontSize: '0.82rem', color: '#71717a' }}>{f}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -93,43 +98,19 @@ const Login = () => {
         padding: '3rem 2.5rem',
       }}>
         <div style={{ width: '100%', maxWidth: 380 }}>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#f4f4f5', marginBottom: '0.4rem' }}>Sign in</h2>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#f4f4f5', marginBottom: '0.4rem' }}>Reset Password</h2>
           <p style={{ color: '#52525b', fontSize: '0.85rem', marginBottom: '2rem' }}>
-            Enter any email & password to access the admin panel.
+            Enter your new password below.
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {/* Email */}
+            {/* New Password */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>Email address</label>
-              <input
-                name="email" type="email" value={form.email} onChange={handleChange}
-                placeholder="admin@portfolio.dev" autoComplete="email"
-                style={{
-                  width: '100%', padding: '0.75rem 1rem', borderRadius: 10,
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-                  color: '#f4f4f5', outline: 'none', fontSize: '0.875rem', fontFamily: 'Inter, sans-serif',
-                }}
-                onFocus={(e)  => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; }}
-                onBlur={(e)   => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
-              />
-            </div>
-
-            {/* Password */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>Password</label>
-                <Link to="/forgot-password" style={{ fontSize: '0.75rem', color: '#6366f1', textDecoration: 'none', transition: 'color 0.2s' }}
-                  onMouseOver={(e) => e.target.style.color = '#818cf8'}
-                  onMouseOut={(e) => e.target.style.color = '#6366f1'}
-                >
-                  Forgot Password?
-                </Link>
-              </div>
+              <label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>New Password</label>
               <div style={{ position: 'relative' }}>
                 <input
-                  name="password" type={showPw ? 'text' : 'password'} value={form.password} onChange={handleChange}
-                  placeholder="••••••••" autoComplete="current-password"
+                  name="password" type={showPw ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
                   style={{
                     width: '100%', padding: '0.75rem 2.75rem 0.75rem 1rem', borderRadius: 10,
                     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
@@ -147,9 +128,39 @@ const Login = () => {
               </div>
             </div>
 
+            {/* Confirm Password */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>Confirm New Password</label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  name="confirmPassword" type={showConfirmPw ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  style={{
+                    width: '100%', padding: '0.75rem 2.75rem 0.75rem 1rem', borderRadius: 10,
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+                    color: '#f4f4f5', outline: 'none', fontSize: '0.875rem', fontFamily: 'Inter, sans-serif',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; }}
+                  onBlur={(e)  => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
+                />
+                <button type="button" onClick={() => setShowConfirmPw(!showConfirmPw)} style={{
+                  position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', color: '#52525b', cursor: 'pointer', display: 'flex',
+                }}>
+                  {showConfirmPw ? <RiEyeOffLine size={17} /> : <RiEyeLine size={17} />}
+                </button>
+              </div>
+            </div>
+
             {error && (
               <p style={{ fontSize: '0.8rem', color: '#ef4444', padding: '0.6rem 0.875rem', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 8 }}>
                 {error}
+              </p>
+            )}
+
+            {message && (
+              <p style={{ fontSize: '0.8rem', color: '#10b981', padding: '0.6rem 0.875rem', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 8 }}>
+                {message}
               </p>
             )}
 
@@ -165,13 +176,22 @@ const Login = () => {
               }}
             >
               {loading && <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />}
-              {loading ? 'Signing in…' : 'Sign in to Admin Panel'}
+              {loading ? 'Updating…' : 'Update Password'}
             </button>
           </form>
+
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <Link to="/login" style={{ color: '#a1a1aa', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseOver={(e) => e.target.style.color = '#f4f4f5'}
+              onMouseOut={(e) => e.target.style.color = '#a1a1aa'}
+            >
+              Back to Sign in
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default ResetPassword;
