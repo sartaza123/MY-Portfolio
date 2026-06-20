@@ -37,7 +37,7 @@ const Login = () => {
       background: '#080808',
     }}>
       {/* Left panel */}
-      <div style={{
+      <div className="login-left-panel" style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         padding: '3rem',
@@ -88,7 +88,7 @@ const Login = () => {
       </div>
 
       {/* Right panel — form */}
-      <div style={{
+      <div className="login-right-panel" style={{
         width: 480, display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '3rem 2.5rem',
       }}>
