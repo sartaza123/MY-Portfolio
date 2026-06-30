@@ -59,11 +59,14 @@ const Modal = ({ isOpen, onClose, title, children, footer, maxWidth = 480 }) => 
 
         {/* Footer */}
         {footer && (
-          <div style={{
-            padding: '1rem 1.5rem',
-            borderTop: '1px solid rgba(255,255,255,0.07)',
-            display: 'flex', justifyContent: 'flex-end', gap: '0.6rem',
-          }}>
+          <div
+            className="modal-footer"
+            style={{
+              padding: '1rem 1.5rem',
+              borderTop: '1px solid rgba(255,255,255,0.07)',
+              display: 'flex', justifyContent: 'flex-end', gap: '0.6rem',
+            }}
+          >
             {footer}
           </div>
         )}

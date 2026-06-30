@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Button from '../../components/ui/Button';
 import Loader from '../../components/ui/Loader';
 import { useToast } from '../../contexts/ToastContext';
@@ -130,7 +130,7 @@ const Certificates = () => {
             />
           </label>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="form-actions">
             <Button type="button" variant="secondary" onClick={loadCertificates}>
               Refresh
             </Button>
@@ -150,7 +150,7 @@ const Certificates = () => {
         {certificates.length === 0 ? (
           <p style={{ color: '#71717a', fontSize: '0.9rem' }}>No certificates uploaded yet.</p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }} className="certificates-grid">
             {certificates.map((certificate) => (
               <div
                 key={certificate.id}

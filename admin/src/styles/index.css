@@ -54,6 +54,7 @@ body {
   background: var(--color-accent);
 }
 
+/* ── Glassmorphism utilities ─────────────────────────────────────────────── */
 .glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
@@ -96,6 +97,7 @@ body {
   background-clip: text;
 }
 
+/* ── Admin shell layout ──────────────────────────────────────────────────── */
 .admin-layout {
   display: flex;
   min-height: 100vh;
@@ -118,6 +120,7 @@ body {
   min-width: 0;
 }
 
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
 .sidebar {
   width: 260px;
   height: 100vh;
@@ -138,120 +141,54 @@ body {
   display: none;
 }
 
+/* ── Animations ──────────────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes slideUpSheet {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.4s ease forwards;
-}
+.animate-fade-up    { animation: fadeUp 0.4s ease forwards; }
+.animate-slide-left { animation: slideInLeft 0.3s ease forwards; }
+.animate-slide-right{ animation: slideInRight 0.35s ease forwards; }
+.animate-scale-in   { animation: scaleIn 0.3s ease forwards; }
+.animate-spin       { animation: spin 0.8s linear infinite; }
 
-.animate-slide-left {
-  animation: slideInLeft 0.3s ease forwards;
-}
+.stagger > *:nth-child(1) { animation-delay: 0.05s; opacity: 0; animation-fill-mode: forwards; }
+.stagger > *:nth-child(2) { animation-delay: 0.10s; opacity: 0; animation-fill-mode: forwards; }
+.stagger > *:nth-child(3) { animation-delay: 0.15s; opacity: 0; animation-fill-mode: forwards; }
+.stagger > *:nth-child(4) { animation-delay: 0.20s; opacity: 0; animation-fill-mode: forwards; }
+.stagger > *:nth-child(5) { animation-delay: 0.25s; opacity: 0; animation-fill-mode: forwards; }
 
-.animate-slide-right {
-  animation: slideInRight 0.35s ease forwards;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.3s ease forwards;
-}
-
-.animate-spin {
-  animation: spin 0.8s linear infinite;
-}
-
-.stagger>*:nth-child(1) {
-  animation-delay: 0.05s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
-.stagger>*:nth-child(2) {
-  animation-delay: 0.1s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
-.stagger>*:nth-child(3) {
-  animation-delay: 0.15s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
-.stagger>*:nth-child(4) {
-  animation-delay: 0.2s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
-.stagger>*:nth-child(5) {
-  animation-delay: 0.25s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
+/* ── Skeleton loader ─────────────────────────────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
   background-size: 200% 100%;
@@ -259,6 +196,7 @@ body {
   border-radius: 8px;
 }
 
+/* ── Toast ───────────────────────────────────────────────────────────────── */
 .toast-container {
   position: fixed;
   top: 1.5rem;
@@ -274,6 +212,7 @@ body {
   pointer-events: all;
 }
 
+/* ── Page header ─────────────────────────────────────────────────────────── */
 .page-header {
   display: flex;
   align-items: center;
@@ -296,25 +235,83 @@ body {
   margin-top: 0.2rem;
 }
 
+/* ── Data table ──────────────────────────────────────────────────────────── */
 .data-table-shell,
 .dashboard-main-grid,
 .messages-layout {
   min-width: 0;
 }
 
+.data-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Auth pages (login / forgot / reset) ─────────────────────────────────── */
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  background: #080808;
+}
+
+.auth-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background: linear-gradient(145deg, rgba(99,102,241,0.08) 0%, rgba(167,139,250,0.04) 100%);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-right {
+  width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+}
+
+/* ── Message detail panel ────────────────────────────────────────────────── */
+.message-detail-panel {
+  position: sticky;
+  top: 92px;
+}
+
+/* ── Form helpers ─────────────────────────────────────────────────────────── */
+.form-card {
+  padding: 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+
+
+/* 1100 px — dashboard 2-col collapses */
 @media (max-width: 1100px) {
   .dashboard-main-grid {
     grid-template-columns: 1fr !important;
   }
 }
 
+/* 920 px — sidebar becomes a drawer */
 @media (max-width: 920px) {
   .sidebar {
     position: fixed;
     inset: 0 auto 0 0;
     width: min(280px, 86vw);
     transform: translateX(-100%);
-    transition: transform 0.25s ease;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: 100dvh;
   }
 
@@ -329,6 +326,7 @@ body {
     background: rgba(0, 0, 0, 0.55);
     border: 0;
     z-index: 60;
+    cursor: pointer;
   }
 
   .mobile-nav-toggle {
@@ -338,11 +336,22 @@ body {
   .header-user {
     display: none !important;
   }
+
+  /* Auth pages — stack at 920 */
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    width: 100%;
+    padding: 2.5rem 2rem;
+  }
 }
 
+/* 768 px */
 @media (max-width: 768px) {
   .main-content {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .page-title {
@@ -360,8 +369,9 @@ body {
     max-width: none !important;
   }
 
+  /* Table min-width ensures horizontal scroll is triggered */
   .data-table {
-    min-width: 620px !important;
+    min-width: 560px !important;
   }
 
   .data-table-actions {
@@ -369,6 +379,7 @@ body {
     align-items: stretch;
   }
 
+  /* Messages: when detail panel open, show it below list */
   .messages-layout {
     grid-template-columns: 1fr !important;
   }
@@ -377,18 +388,29 @@ body {
     position: static !important;
     top: auto !important;
   }
+
+  /* Resume buttons wrap */
+  .resume-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Auth */
+  .auth-right {
+    padding: 2rem 1.5rem;
+  }
 }
 
+/* 520 px */
 @media (max-width: 520px) {
   .main-content {
-    padding: 0.875rem;
+    padding: 1rem;
   }
 
   .page-header {
     align-items: stretch;
   }
 
-  .page-header>*:last-child {
+  .page-header > *:last-child {
     width: 100%;
   }
 
@@ -399,5 +421,65 @@ body {
 
   .dashboard-stats-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  /* Modal footer — stack buttons */
+  .modal-footer {
+    flex-direction: column-reverse !important;
+  }
+
+  .modal-footer > * {
+    width: 100% !important;
+  }
+
+  /* Auth */
+  .auth-right {
+    padding: 1.75rem 1.25rem;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+
+  /* Certificates grid → single column */
+  .certificates-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Form card reduced padding */
+  .form-card {
+    padding: 1.25rem;
+  }
+
+  /* Form actions stack vertically */
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 380 px — tiny phones */
+@media (max-width: 380px) {
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .auth-right {
+    padding: 1.5rem 1rem;
+  }
+
+  .data-table {
+    min-width: 480px !important;
+  }
+
+  /* Form card even more compact */
+  .form-card {
+    padding: 1rem;
   }
 }

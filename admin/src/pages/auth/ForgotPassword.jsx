@@ -26,19 +26,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh', display: 'flex',
-      background: '#080808',
-    }}>
+    <div className="auth-layout">
       {/* Left panel */}
-      <div style={{
-        flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: '3rem',
-        background: 'linear-gradient(145deg, rgba(99,102,241,0.08) 0%, rgba(167,139,250,0.04) 100%)',
-        borderRight: '1px solid rgba(255,255,255,0.05)',
-        position: 'relative', overflow: 'hidden',
-      }}>
+      <div className="auth-left">
         {/* Glowing orbs */}
         {[
           { top: '10%', left: '20%',  size: 200, color: '#6366f1', op: 0.12 },
@@ -74,10 +64,7 @@ const ForgotPassword = () => {
       </div>
 
       {/* Right panel — form */}
-      <div style={{
-        width: 480, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '3rem 2.5rem',
-      }}>
+      <div className="auth-right">
         <div style={{ width: '100%', maxWidth: 380 }}>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#f4f4f5', marginBottom: '0.4rem' }}>Forgot Password</h2>
           <p style={{ color: '#52525b', fontSize: '0.85rem', marginBottom: '2rem' }}>

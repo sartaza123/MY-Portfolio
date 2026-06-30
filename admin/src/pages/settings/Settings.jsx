@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import Loader from '../../components/ui/Loader';
@@ -218,7 +218,7 @@ const Settings = () => {
             <Input label="Full Name" name="name" value={profile.name} onChange={changeProfileField} />
             <Input label="Email" name="email" type="email" value={profile.email} onChange={changeProfileField} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div className="form-actions">
             <Button type="submit" loading={savingProfile}>Save Account</Button>
           </div>
         </form>
@@ -271,7 +271,7 @@ const Settings = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div className="form-actions">
             <Button type="submit" loading={savingContent}>Save Portfolio Content</Button>
           </div>
         </form>
@@ -283,7 +283,7 @@ const Settings = () => {
           <Input label="New Password" name="newPassword" value={pwForm.newPassword} onChange={changePw} type="password" placeholder="At least 6 characters" />
           <Input label="Confirm Password" name="confirmPassword" value={pwForm.confirmPassword} onChange={changePw} type="password" placeholder="Re-enter new password" />
           {pwError && <p style={{ fontSize: '0.8rem', color: '#ef4444' }}>{pwError}</p>}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div className="form-actions">
             <Button type="submit" loading={savingPw}>Update Password</Button>
           </div>
         </form>

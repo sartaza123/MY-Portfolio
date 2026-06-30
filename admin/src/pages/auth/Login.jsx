@@ -5,13 +5,13 @@ import { loginUser } from '../../services/authService';
 import { RiShieldLine, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 const Login = () => {
-  const [form,    setForm]    = useState({ email: '', password: '' });
-  const [showPw,  setShowPw]  = useState(false);
-  const [error,   setError]   = useState('');
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [showPw, setShowPw] = useState(false);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login }  = useAuth();
-  const navigate   = useNavigate();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -32,24 +32,14 @@ const Login = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh', display: 'flex',
-      background: '#080808',
-    }}>
+    <div className="auth-layout">
       {/* Left panel */}
-      <div className="login-left-panel" style={{
-        flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: '3rem',
-        background: 'linear-gradient(145deg, rgba(99,102,241,0.08) 0%, rgba(167,139,250,0.04) 100%)',
-        borderRight: '1px solid rgba(255,255,255,0.05)',
-        position: 'relative', overflow: 'hidden',
-      }}>
+      <div className="auth-left">
         {/* Glowing orbs */}
         {[
-          { top: '10%', left: '20%',  size: 200, color: '#6366f1', op: 0.12 },
-          { top: '60%', right: '10%', size: 160, color: '#a78bfa', op: 0.1  },
-          { top: '70%', left: '5%',   size: 140, color: '#818cf8', op: 0.08 },
+          { top: '10%', left: '20%', size: 200, color: '#6366f1', op: 0.12 },
+          { top: '60%', right: '10%', size: 160, color: '#a78bfa', op: 0.1 },
+          { top: '70%', left: '5%', size: 140, color: '#818cf8', op: 0.08 },
         ].map((o, i) => (
           <div key={i} style={{
             position: 'absolute', width: o.size, height: o.size, borderRadius: '50%',
@@ -88,10 +78,7 @@ const Login = () => {
       </div>
 
       {/* Right panel — form */}
-      <div className="login-right-panel" style={{
-        width: 480, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '3rem 2.5rem',
-      }}>
+      <div className="auth-right">
         <div style={{ width: '100%', maxWidth: 380 }}>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#f4f4f5', marginBottom: '0.4rem' }}>Sign in</h2>
           <p style={{ color: '#52525b', fontSize: '0.85rem', marginBottom: '2rem' }}>
@@ -110,8 +97,8 @@ const Login = () => {
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
                   color: '#f4f4f5', outline: 'none', fontSize: '0.875rem', fontFamily: 'Inter, sans-serif',
                 }}
-                onFocus={(e)  => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; }}
-                onBlur={(e)   => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
+                onFocus={(e) => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
               />
             </div>
 
@@ -136,7 +123,7 @@ const Login = () => {
                     color: '#f4f4f5', outline: 'none', fontSize: '0.875rem', fontFamily: 'Inter, sans-serif',
                   }}
                   onFocus={(e) => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; }}
-                  onBlur={(e)  => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; e.target.style.boxShadow = 'none'; }}
                 />
                 <button type="button" onClick={() => setShowPw(!showPw)} style={{
                   position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)',

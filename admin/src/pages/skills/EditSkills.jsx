@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { RiArrowLeftLine } from 'react-icons/ri';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/ui/Button';
@@ -49,11 +49,11 @@ const EditSkill = () => {
         <Button variant="secondary" icon={<RiArrowLeftLine />} onClick={() => navigate('/skills')}>Back</Button>
       </div>
 
-      <form onSubmit={handleSubmit} className="glass" style={{ padding: '2rem', display: 'grid', gap: '1.25rem' }}>
+      <form onSubmit={handleSubmit} className="glass form-card">
         <Input label="Skill Title" name="title" value={form.title} onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))} required />
         <Input label="Skill Paragraph" name="para" value={form.para} onChange={(event) => setForm((prev) => ({ ...prev, para: event.target.value }))} as="textarea" rows={3} required />
         <Input label="Skill Points" name="pointsText" value={form.pointsText} onChange={(event) => setForm((prev) => ({ ...prev, pointsText: event.target.value }))} as="textarea" rows={4} placeholder="One point per line (3 to 4 lines)" required />
-        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+        <div className="form-actions">
           <Button type="button" variant="secondary" onClick={() => navigate('/skills')}>Cancel</Button>
           <Button type="submit" loading={saving}>Update Skill</Button>
         </div>

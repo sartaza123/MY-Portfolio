@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { RiArrowLeftLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
@@ -71,8 +71,7 @@ const AddProject = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="glass"
-        style={{ padding: "2rem", display: "grid", gap: "1.25rem" }}
+        className="glass form-card"
       >
         <Input
           label="Project Title"
@@ -155,13 +154,7 @@ const AddProject = () => {
           />
         )}
 
-        <div
-          style={{
-            display: "flex",
-            gap: "0.75rem",
-            justifyContent: "flex-end",
-          }}
-        >
+        <div className="form-actions">
           <Button
             type="button"
             variant="secondary"

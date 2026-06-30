@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Button from '../../components/ui/Button';
 import Loader from '../../components/ui/Loader';
 import { useToast } from '../../contexts/ToastContext';
@@ -79,13 +79,13 @@ const Resume = () => {
         <form onSubmit={handleUpload} style={{ display: 'grid', gap: '1rem', maxWidth: 640 }}>
           <div style={{ display: 'grid', gap: '0.35rem' }}><label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>Resume Title</label><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Senior MERN Developer Resume" style={{ width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 10, padding: '0.7rem 1rem', color: '#f4f4f5', fontSize: '0.875rem' }} /></div>
           <div style={{ display: 'grid', gap: '0.35rem' }}><label style={{ fontSize: '0.8rem', fontWeight: 500, color: '#a1a1aa' }}>PDF File</label><input type="file" accept="application/pdf" onChange={(event) => setFile(event.target.files?.[0] || null)} style={{ color: '#d4d4d8', fontSize: '0.875rem' }} /><p style={{ color: '#52525b', fontSize: '0.75rem' }}>Use FormData only. The browser will attach the multipart content type automatically.</p></div>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}><Button type="button" variant="secondary" onClick={loadResume}>Refresh</Button><Button type="submit" loading={saving}>Upload Resume</Button></div>
+          <div className="form-actions"><Button type="button" variant="secondary" onClick={loadResume}>Refresh</Button><Button type="submit" loading={saving}>Upload Resume</Button></div>
         </form>
       </div>
 
       <div className="glass" style={{ padding: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}><div><h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f4f4f5' }}>Active Resume</h2><p style={{ color: '#71717a', fontSize: '0.875rem', marginTop: '0.35rem' }}>Only one active resume is served publicly at a time.</p></div>{resume && <Button variant="danger" loading={deleting} onClick={handleDelete}>Delete</Button>}</div>
-        {!resume ? <p style={{ color: '#71717a', fontSize: '0.9rem' }}>No resume uploaded yet.</p> : <div style={{ display: 'grid', gap: '0.75rem' }}><div style={{ padding: '1rem', borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}><p style={{ fontSize: '1rem', fontWeight: 600, color: '#f4f4f5' }}>{resume.title}</p><p style={{ fontSize: '0.8rem', color: '#71717a', marginTop: '0.35rem' }}>{resume.file}</p></div><div style={{ display: 'flex', gap: '0.75rem' }}><Button type="button" onClick={() => window.open(buildAssetUrl(resume.file), '_blank')}>Preview PDF</Button><Button type="button" variant="secondary" onClick={() => window.open(buildAssetUrl(resume.file), '_blank')}>Open in New Tab</Button></div></div>}
+        {!resume ? <p style={{ color: '#71717a', fontSize: '0.9rem' }}>No resume uploaded yet.</p> : <div style={{ display: 'grid', gap: '0.75rem' }}><div style={{ padding: '1rem', borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}><p style={{ fontSize: '1rem', fontWeight: 600, color: '#f4f4f5' }}>{resume.title}</p><p style={{ fontSize: '0.8rem', color: '#71717a', marginTop: '0.35rem' }}>{resume.file}</p></div><div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }} className="resume-actions"><Button type="button" onClick={() => window.open(buildAssetUrl(resume.file), '_blank')}>Preview PDF</Button><Button type="button" variant="secondary" onClick={() => window.open(buildAssetUrl(resume.file), '_blank')}>Open in New Tab</Button></div></div>}
       </div>
     </div>
   );
